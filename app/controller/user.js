@@ -1,6 +1,7 @@
 'use strict';
 const crypto = require('crypto');
 const Controller = require('egg').Controller;
+const uuidV4 = require('uuid/v4');
 
 const formidablePromise = require('../util/form-helper');
 
@@ -15,7 +16,7 @@ class UserController extends Controller {
       resCode = 401;
     } else {
       try {
-        user = await this.ctx.service.user.getUserAccount(account);
+        user = await this.ctx.service.user.getUserByAccount(account);
         password = crypto
           .createHash('md5')
           .update(password)
@@ -23,10 +24,13 @@ class UserController extends Controller {
         if (user && user.password === password) {
           delete user.password;
           this.ctx.session.user = user;
+          // 调用 rotateCsrfSecret 刷新用户的 CSRF token
+          this.ctx.rotateCsrfSecret();
         } else {
           throw new Error('账户不存在或密码不正确');
         }
       } catch (e) {
+        console.log(e)
         resCode = 500;
       }
     }
@@ -41,9 +45,29 @@ class UserController extends Controller {
     const ctx = this.ctx;
     try {
       const form = await formidablePromise(ctx.req);
-       
+      let {
+        account,
+        username,
+        gender,
+        bio,
+        password,
+        pic,
+      } = formidableResult.fields;
+      password = crypto
+        .createHash('md5')
+        .update(password)
+        .digest('hex');
+      const user = {
+        account,
+        name: username,
+        password,
+        gender,
+        bio,
+      };
+      await this.ctx.service.user.create(user);
     } catch (e) {
       //
+      console.log(e);
     }
   }
 }

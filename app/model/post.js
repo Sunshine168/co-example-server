@@ -1,6 +1,6 @@
 'use strict';
 
-const marked = require('market');
+const marked = require('marked');
 const Mongolass = require('mongolass');
 
 module.exports = app => {
