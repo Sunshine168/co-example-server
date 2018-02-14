@@ -7,6 +7,7 @@
     "egg": "^2.0.0",
     "egg-mongolass": "^1.0.5",
     "egg-scripts": "^2.1.0",
+    "egg-static": "^2.1.0",
     "formidable": "^1.1.1",
     "marked": "^0.3.12",
     "moment": "^2.20.1",

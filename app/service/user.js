@@ -9,7 +9,7 @@ class UserService extends Service {
 
   getUserByAccount(account) {
     return this.app.model.User.findOne({ account })
-      .addCreateAt()
+      .addCreatedAt()
       .exec();
   }
 

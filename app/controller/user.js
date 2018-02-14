@@ -10,7 +10,7 @@ class UserController extends Controller {
     let resCode = 200,
       message = '登录成功',
       user;
-    let { account, password } = this.ctx.request.body;
+    let { account, password } = this.ctx.request.body.data;
     if (this.ctx.session.user) {
       message = '请勿重复登录';
       resCode = 401;
@@ -30,8 +30,8 @@ class UserController extends Controller {
           throw new Error('账户不存在或密码不正确');
         }
       } catch (e) {
-        console.log(e)
         resCode = 500;
+        message = e.message;
       }
     }
     this.ctx.response.body = {
@@ -42,9 +42,7 @@ class UserController extends Controller {
   }
 
   async signUp() {
-    const ctx = this.ctx;
     try {
-      const form = await formidablePromise(ctx.req);
       let {
         account,
         username,
@@ -52,7 +50,7 @@ class UserController extends Controller {
         bio,
         password,
         pic,
-      } = formidableResult.fields;
+      } = this.ctx.request.body.data;
       password = crypto
         .createHash('md5')
         .update(password)
