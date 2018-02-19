@@ -2,7 +2,7 @@
 const crypto = require('crypto');
 const Controller = require('egg').Controller;
 const uuidV4 = require('uuid/v4');
-
+const defaultAvatar = './';
 const formidablePromise = require('../util/form-helper');
 
 class UserController extends Controller {
@@ -37,36 +37,41 @@ class UserController extends Controller {
     this.ctx.response.body = {
       resCode,
       message,
-      user,
+      data: user,
     };
   }
 
   async signUp() {
+    let resCode = 200,
+      message = '注册成功';
     try {
-      let {
-        account,
-        username,
-        gender,
-        bio,
-        password,
-        pic,
-      } = this.ctx.request.body.data;
+      console.log(this.ctx.request.body);
+      let { account, nickname, password, avatar } = this.ctx.request.body.data;
       password = crypto
         .createHash('md5')
         .update(password)
         .digest('hex');
       const user = {
         account,
-        name: username,
+        nickname,
         password,
-        gender,
-        bio,
+        avatar,
       };
       await this.ctx.service.user.create(user);
     } catch (e) {
       //
-      console.log(e);
+      if (e.message.match('E11000 duplicate key')) {
+        resCode = 500;
+        message = '用户名已被占用';
+      } else {
+        resCode = 500;
+        message = '服务器内部错误';
+      }
     }
+    this.ctx.response.body = {
+      resCode,
+      message,
+    };
   }
 }
 
