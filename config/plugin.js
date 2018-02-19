@@ -6,3 +6,8 @@ exports.mongolass = {
   enable: true,
   package: 'egg-mongolass',
 };
+
+exports.io = {
+  enable: true,
+  package: 'egg-socket.io',
+};
