@@ -12,6 +12,12 @@ class RoomService extends Service {
       .sort({ _id: -1 })
       .exec();
   }
+
+  getRoom(roomInfo) {
+    return this.app.model.Room.findOne({ roomInfo })
+      .exec();
+  }
+
   delRoom(room) {
     return this.app.Room.remove({ room }).exec();
   }
