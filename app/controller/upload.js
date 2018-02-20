@@ -7,6 +7,7 @@ const fs = require('fs');
 const uuidV4 = require('uuid/v4');
 
 module.exports = class UploadController extends Controller {
+  // 从简,上传图片的接口是公开的api ,正确不应该这样设计,而且上传云是最好的。
   async upload() {
     const ctx = this.ctx;
     const stream = await ctx.getFileStream();
