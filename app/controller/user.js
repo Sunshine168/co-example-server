@@ -3,7 +3,6 @@ const crypto = require('crypto');
 const Controller = require('egg').Controller;
 const uuidV4 = require('uuid/v4');
 const defaultAvatar = './';
-const formidablePromise = require('../util/form-helper');
 
 class UserController extends Controller {
   async signIn() {
