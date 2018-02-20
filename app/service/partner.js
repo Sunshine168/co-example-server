@@ -6,6 +6,21 @@ class PartnerService extends Service {
   create(partner) {
     return this.app.model.Partner.create(partner).exec();
   }
+
+  getPartners(roomId) {
+    return this.app.model.Partner.find({
+      room: roomId,
+    })
+      .populate({
+        path: 'user',
+        model: 'User',
+      })
+      .sort({
+        _id: -1,
+      })
+      .exec();
+  }
+
   // 按创建时间降序获取某个用户名下的所有房间
   getRooms(partner) {
     return this.app.model.Partner.find({ partner })

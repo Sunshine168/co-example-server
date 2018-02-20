@@ -80,9 +80,18 @@ class UserController extends Controller {
     const user = this.ctx.session.user;
     try {
       // 获取工作空间需要的所有信息
-
-      rooms = this.app.model.Room.getRooms(user._id);
+      const ownerRooms = await this.service.room.getRooms(user._id);
+      const partners = await this.service.partner.getRooms(user._id);
+      const partnerRooms = partners.map(partner => partner.room);
+      if (Array.isArray(ownerRooms)) {
+        rooms.concat(ownerRooms);
+      }
+      if (Array.isArray(partnerRooms)) {
+        rooms.concat(partnerRooms);
+      }
     } catch (e) {
+      this.ctx.logger.error(e);
+      message = '服务器内部错误';
       resCode = 500;
     }
     this.ctx.response.body = {

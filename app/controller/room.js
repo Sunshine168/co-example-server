@@ -73,7 +73,7 @@ module.exports = class Rooms extends Controller {
     const { logger } = this.ctx.app;
     const { queryRoom, status } = this.ctx.app.request.body.data;
     try {
-      const room = this.service.room.getRoom(queryRoom);
+      const room = await this.service.room.getRoom(queryRoom);
       if (!room) {
         message = '房间不存在';
         resCode = 500;
@@ -82,7 +82,7 @@ module.exports = class Rooms extends Controller {
           message = '权限不足';
           resCode = 500;
         } else {
-          result = this.service.partner.updatePartnerStatus(status);
+          result = await this.service.partner.updatePartnerStatus(status);
         }
       }
     } catch (e) {
@@ -93,6 +93,41 @@ module.exports = class Rooms extends Controller {
     this.body = {
       resCode,
       message,
+    };
+  }
+  async getPartners() {
+    let resCode = 200,
+      message = '创建成功',
+      result;
+    const { user } = this.ctx.session;
+    const { logger } = this.ctx.app;
+    const { roomId } = this.ctx.params;
+    try {
+      const room = await this.service.room.getRoom({
+        room: roomId,
+      });
+      if (!room) {
+        message = '房间不存在';
+        resCode = 500;
+      } else {
+        if (room.owner_id !== user._id) {
+          message = '权限不足';
+          resCode = 500;
+        } else {
+          result = await this.service.partner.getPartners(roomId);
+        }
+      }
+    } catch (e) {
+      logger.error(e);
+      resCode = 500;
+      message = '服务器内部错误';
+    }
+    this.body = {
+      resCode,
+      message,
+      data: {
+        result,
+      },
     };
   }
 };

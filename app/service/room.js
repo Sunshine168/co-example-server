@@ -21,6 +21,7 @@ class RoomService extends Service {
   delRoom(room) {
     return this.app.Room.remove({ room }).exec();
   }
+
 }
 
 module.export = RoomService;
