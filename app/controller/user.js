@@ -73,6 +73,27 @@ class UserController extends Controller {
       message,
     };
   }
+
+  async workspaceInfo() {
+    let resCode = 200,
+      message = '',
+      rooms = [];
+    const user = this.ctx.session.user;
+    try {
+      // 获取工作空间需要的所有信息
+
+      rooms = this.app.model.Room.getRooms(user._id);
+    } catch (e) {
+      resCode = 500;
+    }
+    this.ctx.response.body = {
+      resCode,
+      message,
+      data: {
+        rooms,
+      },
+    };
+  }
 }
 
 module.exports = UserController;
