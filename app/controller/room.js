@@ -27,7 +27,7 @@ module.exports = class Rooms extends Controller {
       resCode = 500;
       message = '创建失败';
     }
-    this.body = {
+    this.ctx.body = {
       resCode,
       message,
       data: {
@@ -59,7 +59,7 @@ module.exports = class Rooms extends Controller {
       message = '加入失败';
       resCode = 500;
     }
-    this.body = {
+    this.ctx.body = {
       resCode,
       message,
     };
@@ -90,7 +90,7 @@ module.exports = class Rooms extends Controller {
       resCode = 500;
       message = '服务器内部错误';
     }
-    this.body = {
+    this.ctx.body = {
       resCode,
       message,
     };
@@ -122,7 +122,7 @@ module.exports = class Rooms extends Controller {
       resCode = 500;
       message = '服务器内部错误';
     }
-    this.body = {
+    this.ctx.body = {
       resCode,
       message,
       data: {

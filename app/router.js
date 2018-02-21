@@ -13,5 +13,16 @@ module.exports = app => {
   router.post('/workspace/createRoom', checkLogin, controller.room.createRoom);
   router.post('/workspace/joinRoom', checkLogin, controller.room.joinRoom);
   router.post('/workspace/info', checkLogin, controller.user.workspaceInfo);
+  router.post(
+    '/workspace/updatePartnerStatus',
+    checkLogin,
+    controller.room.updatePartnerStatus
+  );
+  router.post(
+    '/workspace/:roomId/partners',
+    checkLogin,
+    controller.room.getPartners
+  );
+  router.post('/signOut', checkLogin, controller.user.signOut);
   io.of('/').route('exchange', io.controller.nsp.exchange);
 };

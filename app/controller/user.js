@@ -33,7 +33,7 @@ class UserController extends Controller {
         message = e.message;
       }
     }
-    this.ctx.response.body = {
+    this.ctx.body = {
       resCode,
       message,
       data: user,
@@ -67,7 +67,7 @@ class UserController extends Controller {
         message = '服务器内部错误';
       }
     }
-    this.ctx.response.body = {
+    this.ctx.body = {
       resCode,
       message,
     };
@@ -94,12 +94,19 @@ class UserController extends Controller {
       message = '服务器内部错误';
       resCode = 500;
     }
-    this.ctx.response.body = {
+    this.ctx.body = {
       resCode,
       message,
       data: {
         rooms,
       },
+    };
+  }
+
+  async signOut() {
+    this.ctx.session.user = null;
+    this.ctx.body = {
+      resCode: 200,
     };
   }
 }
