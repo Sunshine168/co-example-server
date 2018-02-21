@@ -18,7 +18,7 @@ module.exports = class Rooms extends Controller {
     };
     const { logger } = this.ctx.app;
     try {
-      result = await this.service.room.create(room);
+      result = await this.service.work.create(room);
       roomId = result.ops[0]._id;
       logger.debug('#room create', roomId);
       this.app.radis.set(roomId, result.ops[0]);
@@ -31,7 +31,7 @@ module.exports = class Rooms extends Controller {
       resCode,
       message,
       data: {
-        room: result.ops[0],
+        room: roomId,
       },
     };
   }

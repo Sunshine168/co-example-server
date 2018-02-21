@@ -23,6 +23,10 @@ module.exports = app => {
     checkLogin,
     controller.room.getPartners
   );
+  router.post(
+    '/helper/init-counter',
+    controller.initHelperController.autoIncrementSequenceHelper
+  );
   router.post('/signOut', checkLogin, controller.user.signOut);
   io.of('/').route('exchange', io.controller.nsp.exchange);
 };

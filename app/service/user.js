@@ -18,6 +18,9 @@ class UserService extends Service {
       .safyMode()
       .exec();
   }
+  test(){
+    console.log('2')
+  }
 }
 
 module.exports = UserService;
