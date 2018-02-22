@@ -6,6 +6,7 @@
   "dependencies": {
     "egg": "^2.0.0",
     "egg-mongolass": "^1.0.5",
+    "egg-redis": "^1.0.2",
     "egg-scripts": "^2.1.0",
     "egg-socket.io": "^4.0.6",
     "egg-static": "^2.1.0",

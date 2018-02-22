@@ -19,9 +19,9 @@ module.exports = class Rooms extends Controller {
     const { logger } = this.ctx.app;
     try {
       result = await this.service.work.create(room);
-      roomId = result.ops[0]._id;
+      roomId = result.ops[0].roomNo;
       logger.debug('#room create', roomId);
-      this.app.radis.set(roomId, result.ops[0]);
+      this.app.redis.set(roomId, result.ops[0]);
     } catch (e) {
       logger.error(e);
       resCode = 500;
@@ -37,7 +37,7 @@ module.exports = class Rooms extends Controller {
   }
   async joinRoom() {
     let resCode = 200,
-      message = '创建成功',
+      message = '加入申请已发送',
       result;
     const { user } = this.ctx.session;
     const { logger } = this.ctx.app;
@@ -48,15 +48,35 @@ module.exports = class Rooms extends Controller {
         message = '房间不存在';
         resCode = 500;
       } else {
-        result = this.service.partner.create({
-          room: room._id,
-          partner: user._id,
-          status: room.permissions === 0 ? 1 : 0,
-        });
+        // 加入房间前必须判断该用户不是房主, 不在参与者里, 或者参与状态为2
+        if (room.owner._id === user._id) {
+          message = '你已经是房主,请勿重复加入';
+          resCode = 500;
+        } else {
+          const partnerRecord = this.service.partner.queryPartner({
+            room: room._id,
+            partner: user._id,
+          });
+          if (!partnerRecord) {
+            result = await this.service.partner.create({
+              room: room._id,
+              partner: user._id,
+              status: room.permissions === 0 ? 1 : 0,
+            });
+          } else {
+            if (partnerRecord.status === 2) {
+              this.service.partner.updatePartnerStauts(partnerRecord._id, 0);
+            }
+          }
+          if (partnerRecord.status === 1) {
+            message = '请勿重复加入';
+            resCode = 500;
+          }
+        }
       }
     } catch (e) {
       logger.error(e);
-      message = '加入失败';
+      message = '加入申请发送失败';
       resCode = 500;
     }
     this.ctx.body = {
