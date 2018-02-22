@@ -9,7 +9,7 @@ class UserService extends Service {
 
   getUserByAccount(account) {
     return this.app.model.User.findOne({ account })
-      .addCreateAt()
+      .addCreatedAt()
       .exec();
   }
 
@@ -17,6 +17,9 @@ class UserService extends Service {
     return this.app.model.User.findOne({ _id: id })
       .safyMode()
       .exec();
+  }
+  test(){
+    console.log('2')
   }
 }
 
