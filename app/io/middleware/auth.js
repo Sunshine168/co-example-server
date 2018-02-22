@@ -9,9 +9,10 @@ module.exports = () => {
     const query = socket.handshake.query;
 
     // 用户信息
-    const { room, userId } = query;
+    const { room } = query;
     const rooms = [ room ];
-
+    const { user } = ctx.session;
+    const userId = user._id;
     logger.debug('#user_info', id, room, userId);
 
     const tick = (id, msg) => {
@@ -29,6 +30,8 @@ module.exports = () => {
     // 检查房间是否存在，不存在则踢出用户
     // 备注：此处 app.redis 与插件无关，可用其他存储代替
     const hasRoom = await app.redis.get(`${PREFIX}:${room}`);
+
+    console.log(hasRoom);
 
     logger.debug('#has_exist', hasRoom);
 

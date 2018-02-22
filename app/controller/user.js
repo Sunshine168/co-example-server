@@ -81,7 +81,12 @@ class UserController extends Controller {
       const partnerRooms = partners.map(partner => partner.room);
       this.ctx.logger.debug('get rooms', ownerRooms, partnerRooms);
       if (Array.isArray(ownerRooms)) {
-        rooms = rooms.concat(ownerRooms);
+        rooms = rooms.concat(
+          ownerRooms.map(room => ({
+            ...room,
+            isOwner: true,
+          }))
+        );
       }
       if (Array.isArray(partnerRooms)) {
         rooms = rooms.concat(partnerRooms);

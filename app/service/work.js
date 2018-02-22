@@ -52,8 +52,8 @@ class WorkService extends Service {
     return this.app.model.Room.findOne(room).exec();
   }
 
-  delRoom(room) {
-    return this.app.Room.remove({ room }).exec();
+  deleteRoom(room) {
+    return this.app.model.Room.remove(room).exec();
   }
 }
 

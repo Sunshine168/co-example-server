@@ -1,5 +1,7 @@
 'use strict';
+
 const Controller = require('egg').Controller;
+const PREFIX = 'room';
 
 module.exports = class Rooms extends Controller {
   async createRoom() {
@@ -21,7 +23,7 @@ module.exports = class Rooms extends Controller {
       result = await this.service.work.createRoom(room);
       roomId = result.ops[0].roomNo;
       logger.debug('#room create', roomId);
-      this.app.redis.set(roomId, result.ops[0]);
+      this.app.redis.set(`${PREFIX}:roomId`, result.ops[0]);
     } catch (e) {
       logger.error(e);
       resCode = 500;
@@ -136,7 +138,7 @@ module.exports = class Rooms extends Controller {
     const { roomId } = this.ctx.params;
     try {
       const room = await this.service.work.getRoom({
-        room: roomId,
+        roomNo: roomId,
       });
       if (!room) {
         message = '房间不存在';
@@ -160,6 +162,39 @@ module.exports = class Rooms extends Controller {
       data: {
         result,
       },
+    };
+  }
+
+  async deleteRoom() {
+    let resCode = 200,
+      message = '创建成功',
+      room;
+    const { logger } = this.ctx.app;
+    const { user } = this.ctx.session;
+    const { roomId } = this.ctx.params;
+    try {
+      room = await this.service.work.getRoom({
+        roomNo: roomId,
+      });
+      if (!room) {
+        message = '房间不存在';
+        resCode = 500;
+      } else {
+        if (room.owner + '' !== user._id) {
+          message = '权限不足';
+          resCode = 500;
+        } else {
+          const result = await this.service.work.deleteRoom(room);
+        }
+      }
+    } catch (e) {
+      logger.error(e);
+      resCode = 500;
+      message = '服务器内部错误';
+    }
+    this.ctx.body = {
+      resCode,
+      message,
     };
   }
 };

@@ -14,6 +14,11 @@ module.exports = app => {
   router.post('/workspace/joinRoom', checkLogin, controller.room.joinRoom);
   router.post('/workspace/info', checkLogin, controller.user.workspaceInfo);
   router.post(
+    '/workspace/deleteRoom/:roomId',
+    checkLogin,
+    controller.room.deleteRoom
+  );
+  router.post(
     '/workspace/updatePartnerStatus',
     checkLogin,
     controller.room.updatePartnerStatus
