@@ -76,14 +76,15 @@ class UserController extends Controller {
     const user = this.ctx.session.user;
     try {
       // 获取工作空间需要的所有信息
-      const ownerRooms = await this.service.room.getRooms(user._id);
-      const partners = await this.service.partner.getRooms(user._id);
+      const ownerRooms = await this.service.work.getRooms(user._id);
+      const partners = await this.service.work.getPartnerRooms(user._id);
       const partnerRooms = partners.map(partner => partner.room);
+      this.ctx.logger.debug('get rooms', ownerRooms, partnerRooms);
       if (Array.isArray(ownerRooms)) {
-        rooms.concat(ownerRooms);
+        rooms = rooms.concat(ownerRooms);
       }
       if (Array.isArray(partnerRooms)) {
-        rooms.concat(partnerRooms);
+        rooms = rooms.concat(partnerRooms);
       }
     } catch (e) {
       this.ctx.logger.error(e);

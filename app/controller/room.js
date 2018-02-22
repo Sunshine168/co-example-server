@@ -18,7 +18,7 @@ module.exports = class Rooms extends Controller {
     };
     const { logger } = this.ctx.app;
     try {
-      result = await this.service.work.create(room);
+      result = await this.service.work.createRoom(room);
       roomId = result.ops[0].roomNo;
       logger.debug('#room create', roomId);
       this.app.redis.set(roomId, result.ops[0]);
@@ -35,15 +35,17 @@ module.exports = class Rooms extends Controller {
       },
     };
   }
+
+  // 结构不是很合理,关于用户行为错误是不是也应该抛出异常,根据异常类型进行记录？
   async joinRoom() {
     let resCode = 200,
       message = '加入申请已发送',
       result;
     const { user } = this.ctx.session;
     const { logger } = this.ctx.app;
-    const { queryRoom } = this.ctx.app.request.body.data;
+    const queryRoom = this.ctx.request.body.data;
     try {
-      const room = this.service.room.getRoom(queryRoom);
+      const room = await this.service.work.getRoom(queryRoom);
       if (!room) {
         message = '房间不存在';
         resCode = 500;
@@ -53,24 +55,29 @@ module.exports = class Rooms extends Controller {
           message = '你已经是房主,请勿重复加入';
           resCode = 500;
         } else {
-          const partnerRecord = this.service.partner.queryPartner({
+          const partnerRecord = await this.service.work.queryPartner({
             room: room._id,
             partner: user._id,
           });
           if (!partnerRecord) {
-            result = await this.service.partner.create({
+            result = await this.service.work.createPartner({
               room: room._id,
               partner: user._id,
-              status: room.permissions === 0 ? 1 : 0,
+              join: room.permissions === 0 ? 1 : 0,
             });
+            message = '加入成功';
           } else {
-            if (partnerRecord.status === 2) {
-              this.service.partner.updatePartnerStauts(partnerRecord._id, 0);
+            // 只有需要审核才会进入到这一步
+            if (partnerRecord.join === 2) {
+              await this.service.partner.updatePartnerStauts(
+                partnerRecord._id,
+                0
+              );
             }
-          }
-          if (partnerRecord.status === 1) {
-            message = '请勿重复加入';
-            resCode = 500;
+            if (partnerRecord.join === 1) {
+              message = '请勿重复加入';
+              resCode = 500;
+            }
           }
         }
       }
@@ -82,6 +89,10 @@ module.exports = class Rooms extends Controller {
     this.ctx.body = {
       resCode,
       message,
+      data: {
+        message,
+        status: result && result.result.ok ? result.ops[0].join : null,
+      },
     };
   }
 
@@ -93,7 +104,7 @@ module.exports = class Rooms extends Controller {
     const { logger } = this.ctx.app;
     const { queryRoom, status } = this.ctx.app.request.body.data;
     try {
-      const room = await this.service.room.getRoom(queryRoom);
+      const room = await this.service.work.getRoom(queryRoom);
       if (!room) {
         message = '房间不存在';
         resCode = 500;
@@ -115,6 +126,7 @@ module.exports = class Rooms extends Controller {
       message,
     };
   }
+
   async getPartners() {
     let resCode = 200,
       message = '创建成功',
@@ -123,7 +135,7 @@ module.exports = class Rooms extends Controller {
     const { logger } = this.ctx.app;
     const { roomId } = this.ctx.params;
     try {
-      const room = await this.service.room.getRoom({
+      const room = await this.service.work.getRoom({
         room: roomId,
       });
       if (!room) {

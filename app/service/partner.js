@@ -7,6 +7,10 @@ class PartnerService extends Service {
     return this.app.model.Partner.create(partner).exec();
   }
 
+  queryPartner(partner) {
+    return this.model.Partner.findOne(partner).exec();
+  }
+
   getPartners(roomId) {
     return this.app.model.Partner.find({
       room: roomId,
