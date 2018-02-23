@@ -15,7 +15,7 @@ module.exports = class UploadController extends Controller {
       // 组合出本地存储图片的路径
       avatarPath = path.join(
         this.config.baseDir,
-        `upload/avatar/${fileName}.png`
+        `public/upload/avatar/${fileName}.png`
       );
     let buf;
     // 组合出存储到数据库的路径
@@ -31,7 +31,7 @@ module.exports = class UploadController extends Controller {
     }
 
     ctx.body = {
-      url: avatarPath,
+      url: `/upload/avatar/${fileName}.png`,
       fields: stream.fields,
     };
   }

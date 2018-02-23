@@ -10,4 +10,4 @@ run/
 .DS_Store
 *.sw*
 *.un~
-upload/
+app/upload
