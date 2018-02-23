@@ -67,8 +67,7 @@ module.exports = () => {
       }
 
       const { users } = roomMap.get(room);
-      if (!users.find(queryingUser => queryingUser._id === user.id)) {
-        logger.info(users.find(queryingUser => queryingUser._id === user._id));
+      if (!users.find(queryingUser => queryingUser._id === user._id)) {
         users.push(user);
       }
 
