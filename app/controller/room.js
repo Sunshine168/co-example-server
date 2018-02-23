@@ -23,7 +23,7 @@ module.exports = class Rooms extends Controller {
       result = await this.service.work.createRoom(room);
       roomId = result.ops[0].roomNo;
       logger.debug('#room create', roomId);
-      this.app.redis.set(`${PREFIX}:roomId`, result.ops[0]);
+      this.app.redis.set(`${PREFIX}:${roomId}`, result.ops[0]._id);
     } catch (e) {
       logger.error(e);
       resCode = 500;
@@ -184,7 +184,7 @@ module.exports = class Rooms extends Controller {
           message = '权限不足';
           resCode = 500;
         } else {
-          const result = await this.service.work.deleteRoom(room);
+          const result = await this.service.work.deleteRoomRecord(room);
         }
       }
     } catch (e) {

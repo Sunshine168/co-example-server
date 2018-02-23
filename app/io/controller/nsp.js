@@ -12,9 +12,14 @@ class NspController extends Controller {
 
     try {
       const { target, payload } = message;
-      if (!target) return;
+      if (!target || typeof target !== 'string') return;
       const msg = ctx.helper.parseMsg('exchange', payload, { client, target });
-      nsp.emit(target, msg);
+      if (target.startsWith('room_')) {
+        const roomNo = target.slice(5);
+        nsp.to(roomNo).emit(roomNo, msg);
+      } else {
+        nsp.emit(target, msg);
+      }
     } catch (error) {
       app.logger.error(error);
     }

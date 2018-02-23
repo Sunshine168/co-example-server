@@ -55,6 +55,12 @@ class WorkService extends Service {
   deleteRoom(room) {
     return this.app.model.Room.remove(room).exec();
   }
+  deleteRoomRecord(room) {
+    return Promise.all([
+      this.app.model.Room.remove(room).exec(),
+      this.app.model.Partner.remove({ room: room._id }),
+    ]);
+  }
 }
 
 module.exports = WorkService;
