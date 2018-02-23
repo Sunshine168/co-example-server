@@ -7,6 +7,7 @@ async function checkLogin(ctx, next) {
       resCode: 401,
       message: '请先登录',
     };
+    return;
   }
   await next();
 }

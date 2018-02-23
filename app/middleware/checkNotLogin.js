@@ -7,6 +7,7 @@ async function checkNotLogin(ctx, next) {
       resCode: 403,
       message: '请勿重复登录',
     };
+    return;
   }
   await next();
 }

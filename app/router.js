@@ -32,6 +32,6 @@ module.exports = app => {
     '/helper/init-counter',
     controller.initHelperController.autoIncrementSequenceHelper
   );
-  router.post('/signOut', checkLogin, controller.user.signOut);
+  router.post('/signOut', controller.user.signOut);
   io.of('/').route('exchange', io.controller.nsp.exchange);
 };
