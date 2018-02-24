@@ -197,4 +197,38 @@ module.exports = class Rooms extends Controller {
       message,
     };
   }
+
+  async checkRoomAlive() {
+    let resCode = 500,
+      message = '房间不存在';
+    const { roomNo } = this.ctx.params;
+    const userId = this.ctx.session.user._id;
+    try {
+      const result = await this.ctx.app.redis.get(`room:${roomNo}`);
+      if (result) {
+        // 检查用户是否有权限加入房间
+        const queryRecord = await this.ctx.service.work.queryPartner({
+          room: result,
+          partner: userId,
+        });
+        if (queryRecord) {
+          resCode = 200;
+        } else {
+          const room = await this.ctx.service.work.getRoom({
+            _id: result,
+          });
+          // 需要先转换成string
+          if (room.owner + '' === userId) {
+            resCode = 200;
+          }
+        }
+      }
+    } catch (e) {
+      this.ctx.logger.error(e);
+    }
+    this.ctx.body = {
+      resCode,
+      message,
+    };
+  }
 };
