@@ -1,33 +1,22 @@
-# blog-server
+# co-example-server
 
+a simple chat room application.
 
+## egg skill
+### basic skill
 
-## QuickStart
+* [x] controller
+* [x] service
+* [x] model
+* [x] plugin
+* [x] extend
+* [x] logger 
 
-<!-- add docs here for user -->
+###  Advanced
 
-see [egg docs][egg] for more detail.
+* [x] middleware
+* [x] socket.io
+* [x] custom plugin
+* [ ] deploy
+ 
 
-### Development
-
-```bash
-$ npm i
-$ npm run dev
-$ open http://localhost:7001/
-```
-
-### Deploy
-
-```bash
-$ npm start
-$ npm stop
-```
-
-### npm scripts
-
-- Use `npm run lint` to check code style.
-- Use `npm test` to run unit test.
-- Use `npm run autod` to auto detect dependencies upgrade, see [autod](https://www.npmjs.com/package/autod) for more detail.
-
-
-[egg]: https://eggjs.org
