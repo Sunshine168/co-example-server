@@ -6,7 +6,7 @@ module.exports = app => {
   const { mongolass } = app;
   const Partner = mongolass.model('Partner', {
     room: { type: Mongolass.Types.ObjectId },
-    join: { type: 'number' },
+    join: { type: 'number' }, // -1彻底拉黑, 0待通过, 1已通过, 2拒绝
     partner: { type: Mongolass.Types.ObjectId },
   });
 

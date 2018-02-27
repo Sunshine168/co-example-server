@@ -37,6 +37,11 @@ module.exports = app => {
     checkLogin,
     controller.room.checkRoomAlive
   );
+  router.post(
+    '/workspace/:roomNo/quitRoom',
+    checkLogin,
+    controller.room.quitRoom
+  );
   router.post('/signOut', controller.user.signOut);
   io.of('/').route('exchange', io.controller.nsp.exchange);
 };

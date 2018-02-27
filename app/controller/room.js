@@ -111,11 +111,15 @@ module.exports = class Rooms extends Controller {
         message = '房间不存在';
         resCode = 500;
       } else {
-        if (room.owner_id !== user._id) {
+        if (room.owner + '' !== user._id) {
           message = '权限不足';
           resCode = 500;
         } else {
-          result = await this.service.partner.updatePartnerStatus(status);
+          result = await this.service.work.updatePartnerStatus(
+            user._id,
+            room._id,
+            status
+          );
         }
       }
     } catch (e) {
@@ -144,11 +148,11 @@ module.exports = class Rooms extends Controller {
         message = '房间不存在';
         resCode = 500;
       } else {
-        if (room.owner_id !== user._id) {
+        if (room.owner + '' !== user._id) {
           message = '权限不足';
           resCode = 500;
         } else {
-          result = await this.service.partner.getPartners(roomId);
+          result = await this.service.work.getPartners(room._id);
         }
       }
     } catch (e) {
@@ -167,7 +171,7 @@ module.exports = class Rooms extends Controller {
 
   async deleteRoom() {
     let resCode = 200,
-      message = '创建成功',
+      message = '删除成功',
       room;
     const { logger } = this.ctx.app;
     const { user } = this.ctx.session;
@@ -185,6 +189,40 @@ module.exports = class Rooms extends Controller {
           resCode = 500;
         } else {
           const result = await this.service.work.deleteRoomRecord(room);
+        }
+      }
+    } catch (e) {
+      logger.error(e);
+      resCode = 500;
+      message = '服务器内部错误';
+    }
+    this.ctx.body = {
+      resCode,
+      message,
+    };
+  }
+
+  async quitRoom() {
+    let resCode = 500,
+      message = '退出失败',
+      room;
+    const { logger } = this.ctx.app;
+    const { user } = this.ctx.session;
+    const { roomNo } = this.ctx.params;
+    try {
+      room = await this.service.work.getRoom({
+        roomNo,
+      });
+      if (!room) {
+        message = '房间不存在';
+      } else {
+        const res = await this.service.work.deletePartner({
+          partner: user._id,
+          room: room._id,
+        });
+        if (res.result.ok && res.result.n === 1) {
+          resCode = 200;
+          message = '退出成功';
         }
       }
     } catch (e) {

@@ -30,7 +30,7 @@ class WorkService extends Service {
       .exec();
   }
 
-  // 按创建时间降序获取某个用户名下的所有房间
+  // 按创建时间降序获取某个用户参加的所有房间
   getPartnerRooms(partner) {
     return this.app.model.Partner.find({ partner })
       .populate({
@@ -39,6 +39,23 @@ class WorkService extends Service {
       })
       .sort({ _id: -1 })
       .exec();
+  }
+
+  // 获取某一房间所有没有被拒绝的参与者
+  async getPartners(room) {
+    const partners = await this.app.model.Partner.find({
+      room,
+      join: { $ne: -1 },
+    })
+      .populate({
+        path: 'partner',
+        model: 'User',
+        select: {
+          password: 0,
+        },
+      })
+      .exec();
+    return partners.map(partner => partner.partner);
   }
 
   queryPartner(partner) {
@@ -55,10 +72,25 @@ class WorkService extends Service {
   deleteRoom(room) {
     return this.app.model.Room.remove(room).exec();
   }
+
+  deletePartner(partner) {
+    return this.app.model.Partner.remove(partner).exec();
+  }
+
+  updatePartnerStatus(userId, roomId, status) {
+    return this.app.model.Partner.update(
+      {
+        room: roomId,
+        partner: userId,
+      },
+      { $set: { status } }
+    );
+  }
+
   deleteRoomRecord(room) {
     return Promise.all([
       this.app.model.Room.remove(room).exec(),
-      this.app.model.Partner.remove({ room: room._id }),
+      this.deletePartner({ room: room._id }),
     ]);
   }
 }
