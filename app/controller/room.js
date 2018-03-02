@@ -238,7 +238,8 @@ module.exports = class Rooms extends Controller {
 
   async checkRoomAlive() {
     let resCode = 500,
-      message = '房间不存在';
+      message = '房间不存在',
+      room;
     const { roomNo } = this.ctx.params;
     const userId = this.ctx.session.user._id;
     try {
@@ -251,13 +252,15 @@ module.exports = class Rooms extends Controller {
         });
         if (queryRecord) {
           resCode = 200;
+          message = '获取房间成功';
         } else {
-          const room = await this.ctx.service.work.getRoom({
+          room = await this.ctx.service.work.getRoom({
             _id: result,
           });
           // 需要先转换成string
           if (room.owner + '' === userId) {
             resCode = 200;
+            message = '获取房间成功';
           }
         }
       }
@@ -267,6 +270,9 @@ module.exports = class Rooms extends Controller {
     this.ctx.body = {
       resCode,
       message,
+      data: {
+        room,
+      },
     };
   }
 };

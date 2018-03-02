@@ -3,7 +3,7 @@
 a simple chat room application.
 
 ## egg skill
-### basic skill
+### basic cover
 
 * [x] controller
 * [x] service
@@ -12,11 +12,12 @@ a simple chat room application.
 * [x] extend
 * [x] logger 
 
+
 ###  Advanced
 
 * [x] middleware
 * [x] socket.io
 * [x] custom plugin
 * [ ] deploy
- 
+* [ ] err-handler
 

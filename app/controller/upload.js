@@ -31,7 +31,7 @@ module.exports = class UploadController extends Controller {
     }
 
     ctx.body = {
-      url: `/upload/avatar/${fileName}.png`,
+      url: `/public/avatar/${fileName}.png`,
       fields: stream.fields,
     };
   }
