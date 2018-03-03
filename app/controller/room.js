@@ -245,18 +245,18 @@ module.exports = class Rooms extends Controller {
     try {
       const result = await this.ctx.app.redis.get(`room:${roomNo}`);
       if (result) {
-        // 检查用户是否有权限加入房间
+        // 检查用户是否有权限进入房间
         const queryRecord = await this.ctx.service.work.queryPartner({
           room: result,
           partner: userId,
+        });
+        room = await this.ctx.service.work.getRoom({
+          _id: result,
         });
         if (queryRecord) {
           resCode = 200;
           message = '获取房间成功';
         } else {
-          room = await this.ctx.service.work.getRoom({
-            _id: result,
-          });
           // 需要先转换成string
           if (room.owner + '' === userId) {
             resCode = 200;
@@ -271,7 +271,7 @@ module.exports = class Rooms extends Controller {
       resCode,
       message,
       data: {
-        room,
+        room: resCode === 200 ? room : null,
       },
     };
   }
