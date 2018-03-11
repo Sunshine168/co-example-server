@@ -1,6 +1,15 @@
-# co-example-server
+# co-example-server by egg
 
 a simple chat room application.
+
+[online](http://139.199.152.83:7001/) 
+
+## preview
+
+![](http://orscxqn8h.bkt.clouddn.com/18-3-11/57831346.jpg)
+![](http://orscxqn8h.bkt.clouddn.com/18-3-11/90578656.jpg)
+![](http://orscxqn8h.bkt.clouddn.com/18-3-11/18045408.jpg)
+
 
 ## egg skill
 ### basic cover
@@ -11,6 +20,7 @@ a simple chat room application.
 * [x] plugin
 * [x] extend
 * [x] logger 
+* [ ] validate params
 
 
 ###  Advanced
@@ -18,6 +28,24 @@ a simple chat room application.
 * [x] middleware
 * [x] socket.io
 * [x] custom plugin
-* [ ] deploy
+* [X] custom middleware
+* [X] deploy
 * [ ] err-handler
+
+
+### dev or deploy 
+
+ensure node eng > 8.9
+redis and mango db  are installed
+
+```git clone https://github.com/Sunshine168/co-example-server.git```
+
+#### deploy
+
+```npm run dev // or yarn dev```
+
+#### prod
+
+``` npm run start --env=prod //or yarn start --env=prod
+
 
