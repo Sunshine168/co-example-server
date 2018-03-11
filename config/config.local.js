@@ -6,11 +6,11 @@ module.exports = appInfo => {
     path.join(appInfo.baseDir, '/app/public'),
     path.join(appInfo.baseDir, '/app/upload'),
   ];
-  
+
   return {
     security: {
       csrf: {
-        enable: false,
+        // enable: false,
       },
     },
     mongolass: {
@@ -45,6 +45,13 @@ module.exports = appInfo => {
     },
     static: {
       dir,
+    },
+    view: {
+      defaultExt: '.html',
+      mapping: {
+        '.ejs': 'ejs',
+        '.html': 'ejs',
+      },
     },
   };
 };

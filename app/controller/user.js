@@ -19,8 +19,6 @@ class UserController extends Controller {
       if (user && user.password === password) {
         delete user.password;
         this.ctx.session.user = user;
-        // 调用 rotateCsrfSecret 刷新用户的 CSRF token
-        this.ctx.rotateCsrfSecret();
       } else {
         throw new Error('账户不存在或密码不正确');
       }

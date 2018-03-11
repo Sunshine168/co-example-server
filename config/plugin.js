@@ -16,3 +16,8 @@ exports.redis = {
   enable: true,
   package: 'egg-redis',
 };
+
+exports.ejs = {
+  enable: true,
+  package: 'egg-view-ejs',
+};
