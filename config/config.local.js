@@ -10,7 +10,7 @@ module.exports = appInfo => {
   return {
     security: {
       csrf: {
-        // enable: false,
+        enable: false,
       },
     },
     mongolass: {

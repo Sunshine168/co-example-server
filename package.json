@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "egg": "^2.0.0",
+    "egg-alinode": "^2.0.1",
     "egg-mongolass": "^1.0.5",
     "egg-redis": "^1.0.2",
     "egg-scripts": "^2.1.0",
