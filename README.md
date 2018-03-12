@@ -7,6 +7,7 @@ a simple chat room application.
 ## preview
 
 ![](http://orscxqn8h.bkt.clouddn.com/18-3-11/57831346.jpg)
+![](http://orscxqn8h.bkt.clouddn.com/18-3-12/38365908.jpg)
 ![](http://orscxqn8h.bkt.clouddn.com/18-3-11/90578656.jpg)
 ![](http://orscxqn8h.bkt.clouddn.com/18-3-11/18045408.jpg)
 
@@ -21,15 +22,15 @@ a simple chat room application.
 * [x] extend
 * [x] logger 
 * [ ] validate params
+* [ ] test
 
 
 ###  Advanced
 
-* [x] middleware
+* [x] middleware --check(not)Login and spa redirect
 * [x] socket.io
-* [x] custom plugin
-* [X] custom middleware
-* [X] deploy
+* [x] custom plugin --[egg-mongolass](https://github.com/Sunshine168/egg-mongolass)
+* [x] deploy
 * [ ] err-handler
 
 
@@ -46,6 +47,6 @@ redis and mango db  are installed
 
 #### prod
 
-``` npm run start --env=prod //or yarn start --env=prod
+``` npm run start --env=prod //or yarn start --env=prod ```
 
 
