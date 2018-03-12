@@ -4,6 +4,13 @@ a simple chat room application.
 
 [online](http://139.199.152.83:7001/) 
 
+test 
+account:123456789@qq.com password:123123123
+
+account:12345678@qq.com password:123123123
+
+
+
 ## preview
 
 ![](http://orscxqn8h.bkt.clouddn.com/18-3-11/57831346.jpg)
@@ -41,12 +48,33 @@ redis and mango db  are installed
 
 ```git clone https://github.com/Sunshine168/co-example-server.git```
 
+and run
+
+```npm install``` or ```yarn install```
+
+#### **before run!!**
+ create count  schema in mongodb ,and insert 
+ 
+ ```js
+ {
+        _id: 'room',
+        sequenceValue: 1000,
+ }
+ ```   
+ 
+ or in **dev** mode ,use postman or other utils to post
+ 
+ ```host:port/helper/init-counter```
+ 
+ eg: ```http://localhost:7001/helper/ini-counter```
+
 #### deploy
 
-```npm run dev // or yarn dev```
+```npm run dev // or yarn dev``` default run in 7001 port
 
 #### prod
 
-``` npm run start --env=prod //or yarn start --env=prod ```
+``` npm run start --env=prod //or yarn start --env=prod ``` default run in 7001 port
+
 
 
