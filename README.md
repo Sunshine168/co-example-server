@@ -5,6 +5,7 @@ a simple chat room application.
 [online](http://139.199.152.83:7001/) 
 
   [font- mobx+react+react-routerv4+socket.io+styled-components+flow](https://github.com/Sunshine168/co-example-font)
+  
  [server](https://github.com/Sunshine168/co-example-server)
 
 test 
@@ -53,7 +54,7 @@ redis and mango db  are installed
 
 and run
 
-```npm install``` or ```yarn install```
+```npm install``` or ```yarn ```
 
 #### **before run!!**
  create count  schema in mongodb ,and insert 
