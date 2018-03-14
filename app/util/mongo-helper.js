@@ -11,4 +11,3 @@ function counter(name, model) {
 }
 
 exports.counter = counter;
- 

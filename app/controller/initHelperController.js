@@ -13,13 +13,13 @@ class InitHelperController extends Controller {
         sequenceValue: 1000,
       });
     } catch (e) {
-      this.ctx.logger.error(e)
+      this.ctx.logger.error(e);
       resCode = 500;
       message = '初始化失败';
     }
     this.ctx.body = {
       resCode,
-      message
+      message,
     };
   }
 }
