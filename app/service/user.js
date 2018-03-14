@@ -18,8 +18,9 @@ class UserService extends Service {
       .safyMode()
       .exec();
   }
-  test(){
-    console.log('2')
+
+  remove(user) {
+    return this.app.model.User.remove(user).exec();
   }
 }
 

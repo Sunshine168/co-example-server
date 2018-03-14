@@ -8,7 +8,18 @@ module.exports = app => {
     avatar: { type: 'string' },
     nickname: { type: 'string' },
   });
-
+  User.plugin('safyMode', {
+    afterFindOne(user) {
+      if (user) {
+        return {
+          account: user.account,
+          nickname: user.nickname,
+          avatar: user.avatar,
+          _id: user._id,
+        };
+      }
+    },
+  });
   User.index({ account: 1 }, { unique: true }).exec();
   return User;
 };
