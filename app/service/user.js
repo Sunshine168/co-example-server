@@ -22,6 +22,15 @@ class UserService extends Service {
   remove(user) {
     return this.app.model.User.remove(user).exec();
   }
+
+  async findOrNew(user) {
+    const findingUser = await this.getUserByAccount(user.account);
+    if (findingUser) {
+      return findingUser;
+    }
+    const result = await this.create(user);
+    return result.ops[0];
+  }
 }
 
 module.exports = UserService;
