@@ -19,16 +19,16 @@ class CounterService extends Service {
   }
 
   findCounter(name) {
-    return this.ctx.model.Counter.findOne({ _id: name }).exec;
+    return this.ctx.model.Counter.findOne({ _id: name }).exec();
   }
 
-  async findOrNewCounter(name) {
+  async findOrNew(name) {
     const findingCounter = await this.findCounter(name);
     if (findingCounter) {
       return this.findCounter;
     }
-    const result = this.create({
-      _id: 'room',
+    const result = await this.create({
+      _id: name,
       sequenceValue: 1000,
     });
     return result.ops[0];

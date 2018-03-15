@@ -13,7 +13,7 @@ describe('work-service-default-room', async () => {
     const accountFreix = `loginname_${Date.now()}`;
     const account = accountFreix + '@test.com';
     // 暂时没有很好的办法解耦,打算通过放入启动任务里面
-    await ctx.service.counter.findOrNewCounter('room');
+    await ctx.service.counter.findOrNew('room');
     user = await ctx.service.user.findOrNew({
       account,
       nickname: 'nickname',
