@@ -1,5 +1,17 @@
 # co-example-server by egg
 
+
+[![build status][travis-image]][travis-url]
+[![Test coverage][codecov-image]][codecov-url]
+
+
+[travis-image]: https://img.shields.io/travis/Sunshine168/co-example-server.svg?style=flat-square
+[travis-url]: https://travis-ci.org/Sunshine168/co-example-server
+[codecov-image]: https://img.shields.io/codecov/c/github/Sunshine168/co-example-server.svg?style=flat-square
+[codecov-url]: https://codecov.io/github/Sunshine168/co-example-server?branch=master
+
+
+
 a simple chat room application.
 
 [online](http://139.199.152.83:7001/) 
