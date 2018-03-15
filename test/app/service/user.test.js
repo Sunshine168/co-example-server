@@ -1,30 +1,27 @@
 'use strict';
 
 const { app, assert } = require('egg-mock/bootstrap');
-const mm = require('egg-mock');
 
-const account = '12345@test.com';
-const nickname = 'test';
-const password = '123132123';
-const avatar = '';
-
-describe('test-work', async () => {
+describe('user-service', async () => {
   let ctx,
     user,
-    result;
+    result,
+    account;
   before(async () => {
     ctx = app.mockContext();
     user = ctx.service.user;
-    result = await user.create({
+    const accountFreix = `loginname_${Date.now()}`;
+    account = accountFreix + '@test.com';
+    result = await user.findOrNew({
       account,
-      nickname,
-      password,
-      avatar,
+      nickname: 'nickname',
+      password: 'password',
+      avatar: '',
     });
   });
 
   it('create user success', async () => {
-    assert.equal(result.result.ok, 1);
+    assert.ok(result);
   });
 
   it('getUserByAccount should work well', async () => {
@@ -33,11 +30,7 @@ describe('test-work', async () => {
   });
 
   it('getUserById should work well', async () => {
-    const findingUser = await user.getUserById(result.ops[0]._id);
-    assert.equal(findingUser._id + '', result.ops[0]._id + '');
-  });
-
-  after(async () => {
-    await user.remove({ account });
+    const findingUser = await user.getUserById(result._id);
+    assert.equal(findingUser._id + '', result._id + '');
   });
 });
