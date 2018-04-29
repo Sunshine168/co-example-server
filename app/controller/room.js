@@ -100,13 +100,15 @@ module.exports = class Rooms extends Controller {
 
   async updatePartnerStatus() {
     let resCode = 200,
-      message = '创建成功',
+      message = '审核成功',
       result;
     const { user } = this.ctx.session;
     const { logger } = this.ctx.app;
-    const { queryRoom, status } = this.ctx.app.request.body.data;
+    const { queryRoom, status,user_id } = this.ctx.request.body.data;
     try {
-      const room = await this.service.work.getRoom(queryRoom);
+      const room = await this.service.work.getRoom({
+        _id: queryRoom,
+      });
       if (!room) {
         message = '房间不存在';
         resCode = 500;
@@ -116,7 +118,7 @@ module.exports = class Rooms extends Controller {
           resCode = 500;
         } else {
           result = await this.service.work.updatePartnerStatus(
-            user._id,
+            user_id,
             room._id,
             status
           );

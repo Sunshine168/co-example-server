@@ -55,7 +55,11 @@ class WorkService extends Service {
         },
       })
       .exec();
-    return partners.map(partner => partner.partner);
+    return partners.map(partner => ({
+      ...partner.partner,
+      status: partner.join,
+      roomNo: room,
+    }));
   }
 
   queryPartner(partner) {
@@ -77,13 +81,22 @@ class WorkService extends Service {
     return this.app.model.Partner.remove(partner).exec();
   }
 
-  updatePartnerStatus(userId, roomId, status) {
-    return this.app.model.Partner.update(
+  async updatePartnerStatus(userId, roomId, status) {
+    const test = await this.app.model.Partner.findOne({
+      room: roomId,
+      partner: userId,
+    });
+    console.log({
+      room: roomId,
+      partner: userId,
+    })
+    console.log(test);
+    return this.app.model.Partner.updateOne(
       {
         room: roomId,
         partner: userId,
       },
-      { $set: { status } }
+      { $set: { join: status } }
     );
   }
 
