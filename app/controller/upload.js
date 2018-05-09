@@ -14,38 +14,33 @@ module.exports = class UploadController extends Controller {
     let url;
     const ctx = this.ctx;
     const stream = await ctx.getFileStream();
-    const fileName = uuidV4().replace(/-/g, ''),
-      // 组合出本地存储图片的路径
-      avatarPath = path.join(this.config.baseDir, `app/upload/avatar/${fileName}.png`);
-    const {baseQiniu, getInstance,getToken } = qiniu
-    const instance = getInstance()
-    const formUploader = new baseQiniu
-      .form_up
-      .FormUploader(instance.config);
-    const putExtra = new baseQiniu
-      .form_up
-      .PutExtra();
+    const fileName = uuidV4().replace(/-/g, '');
+    const { baseQiniu, getInstance, getToken } = qiniu;
+    const instance = getInstance();
+    const formUploader = new baseQiniu.form_up.FormUploader(instance.config);
+    const putExtra = new baseQiniu.form_up.PutExtra();
     const uplodPromise = () => {
       return new Promise((resolve, reject) => {
-        formUploader
-          .putStream(getToken(), fileName, stream, putExtra, function (respErr, respBody, respInfo) {
-            if (respErr) {
-              throw respErr;
-            }
-            if (respInfo.statusCode === 200) {
-              resolve(respBody);
-            } else {
-              reject(respBody);
-            }
-          });
-      })
+        formUploader.putStream(getToken(), fileName, stream, putExtra, function(
+          respErr,
+          respBody,
+          respInfo
+        ) {
+          if (respErr) {
+            throw respErr;
+          }
+          if (respInfo.statusCode === 200) {
+            resolve(respBody);
+          } else {
+            reject(respBody);
+          }
+        });
+      });
     };
     // 组合出存储到数据库的路径
     try {
-
-      const res = await uplodPromise()
-       url = `http://orscxqn8h.bkt.clouddn.com/${fileName}`
-
+      const res = await uplodPromise();
+      url = `http://orscxqn8h.bkt.clouddn.com/${fileName}`;
     } catch (err) {
       // must consume the stream, otherwise browser will be stuck.
       await sendToWormhole(stream);

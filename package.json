@@ -22,6 +22,9 @@
     "stream-wormhole": "^1.0.3",
     "uuid": "^3.2.1"
   },
+  "lint-staged": {
+    "*.{js,json}": ["npm run format", "git add"]
+  },
   "devDependencies": {
     "autod": "^3.0.1",
     "autod-egg": "^1.0.0",
@@ -30,6 +33,9 @@
     "egg-mock": "^3.13.0",
     "eslint": "^4.11.0",
     "eslint-config-egg": "^5.1.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.1.0",
+    "prettier-eslint-cli": "^4.7.1",
     "webstorm-disable-index": "^1.2.0"
   },
   "engines": {
@@ -45,7 +51,10 @@
     "cov": "egg-bin cov",
     "lint": "eslint .",
     "ci": "npm run cov",
-    "autod": "autod"
+    "autod": "autod",
+    "prettier-eslint": "prettier-eslint",
+    "precommit": "lint-staged",
+    "format": "npm run prettier-eslint --write \"app/**/*.js\""
   },
   "ci": {
     "version": "8"

@@ -81,22 +81,22 @@ class WorkService extends Service {
     return this.app.model.Partner.remove(partner).exec();
   }
 
-  async updatePartnerStatus(userId, roomId, status) {
-    const test = await this.app.model.Partner.findOne({
-      room: roomId,
-      partner: userId,
-    });
-    console.log({
-      room: roomId,
-      partner: userId,
-    })
-    console.log(test);
+  updatePartnerStatus(userId, roomId, status) {
     return this.app.model.Partner.updateOne(
       {
         room: roomId,
         partner: userId,
       },
       { $set: { join: status } }
+    );
+  }
+
+  async updateRoom(room) {
+    return this.app.model.Room.updateOne(
+      { roomNo: parseInt(room.roomNo) },
+      {
+        $set: { img: room.img },
+      }
     );
   }
 

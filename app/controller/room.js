@@ -104,11 +104,9 @@ module.exports = class Rooms extends Controller {
       result;
     const { user } = this.ctx.session;
     const { logger } = this.ctx.app;
-    const { queryRoom, status,user_id } = this.ctx.request.body.data;
+    const { queryRoom, status, user_id } = this.ctx.request.body.data;
     try {
-      const room = await this.service.work.getRoom({
-        _id: queryRoom,
-      });
+      const room = await this.service.work.getRoom({ _id: queryRoom });
       if (!room) {
         message = '房间不存在';
         resCode = 500;
@@ -143,9 +141,7 @@ module.exports = class Rooms extends Controller {
     const { logger } = this.ctx.app;
     const { roomId } = this.ctx.params;
     try {
-      const room = await this.service.work.getRoom({
-        roomNo: roomId,
-      });
+      const room = await this.service.work.getRoom({ roomNo: roomId });
       if (!room) {
         message = '房间不存在';
         resCode = 500;
@@ -171,6 +167,32 @@ module.exports = class Rooms extends Controller {
     };
   }
 
+  async updateRoom() {
+    let resCode = 200,
+      room,
+      message,
+      result;
+    const { logger } = this.ctx.app;
+    const { user } = this.ctx.session;
+    const { roomId } = this.ctx.params;
+    const { img } = this.ctx.request.body.data;
+    logger.debug(roomId)
+    try {
+      room = await this.service.work.getRoom({ roomNo: roomId });
+      if (!room) {
+        message = '房间不存在';
+        resCode = 500;
+      } else {
+        result = await this.service.work.updateRoom({ roomNo: roomId, img });
+        console.log(result);
+      }
+    } catch (e) {}
+    this.ctx.body = {
+      resCode,
+      message,
+    };
+  }
+
   async deleteRoom() {
     let resCode = 200,
       message = '删除成功',
@@ -179,9 +201,7 @@ module.exports = class Rooms extends Controller {
     const { user } = this.ctx.session;
     const { roomId } = this.ctx.params;
     try {
-      room = await this.service.work.getRoom({
-        roomNo: roomId,
-      });
+      room = await this.service.work.getRoom({ roomNo: roomId });
       if (!room) {
         message = '房间不存在';
         resCode = 500;
@@ -212,9 +232,7 @@ module.exports = class Rooms extends Controller {
     const { user } = this.ctx.session;
     const { roomNo } = this.ctx.params;
     try {
-      room = await this.service.work.getRoom({
-        roomNo,
-      });
+      room = await this.service.work.getRoom({ roomNo });
       if (!room) {
         message = '房间不存在';
       } else {
@@ -252,9 +270,7 @@ module.exports = class Rooms extends Controller {
           room: result,
           partner: userId,
         });
-        room = await this.ctx.service.work.getRoom({
-          _id: result,
-        });
+        room = await this.ctx.service.work.getRoom({ _id: result });
         if (queryRecord) {
           resCode = 200;
           message = '获取房间成功';
