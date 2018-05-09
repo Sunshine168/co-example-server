@@ -59,5 +59,11 @@ module.exports = appInfo => {
     },
   };
 
+  config.qiniu = {
+    access_key: 'ak_9EoLCKEaP1aot7UCL5sHiaG98B45W461b9GOe',
+    secret_key: 'LsagMctF6MgUcpb04uvd_IUv_Rt1RKxd9jcSGPjv',
+    bucket:'test',
+  }
+
   return config;
 };
