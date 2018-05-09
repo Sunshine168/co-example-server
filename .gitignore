@@ -11,4 +11,4 @@ run/
 *.sw*
 *.un~
 app/upload
-config/*.prod.js
+config/config.prod.js
